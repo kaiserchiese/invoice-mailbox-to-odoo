@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mailbox-to-odoo"
+version = "0.1.0"
+description = "Invoice PDFs from a Gmail mailbox (IMAP, read-only) into one folder per supplier, or draft vendor bills in Odoo"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "kaiserchiese" }]
+keywords = ["odoo", "invoices", "imap", "gmail", "accounting", "pdf"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+  "Topic :: Office/Business :: Financial :: Accounting",
+]
+dependencies = ["PyYAML>=6"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-cov", "ruff>=0.5", "mypy>=1.8", "types-PyYAML"]
+
+[project.urls]
+Homepage = "https://github.com/kaiserchiese/invoice-mailbox-to-odoo"
+Issues = "https://github.com/kaiserchiese/invoice-mailbox-to-odoo/issues"
+
+[project.scripts]
+mailbox-to-odoo = "mailbox_to_odoo.__main__:run"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mailbox_to_odoo"]
+
+[tool.ruff]
+line-length = 120
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.mypy]
+files = ["src"]
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

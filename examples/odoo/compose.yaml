@@ -1,0 +1,31 @@
+# A throwaway Odoo Community with demo data, for trying mailbox-to-odoo. Not for production.
+#   docker compose -f examples/odoo/compose.yaml up -d      (first start installs Accounting, a few minutes)
+#   ODOO_VERSION=17.0 docker compose ... up -d              (to try 17 instead of 18)
+#   docker compose -f examples/odoo/compose.yaml down -v    (stops it and deletes the data)
+# Login: admin / admin on database "demo", http://127.0.0.1:18069 (local only).
+name: mailbox-to-odoo-demo
+
+x-odoo: &odoo
+  image: odoo:${ODOO_VERSION:-18.0}
+  environment: {HOST: db, USER: odoo, PASSWORD: odoo}
+
+services:
+  db:
+    image: postgres:16
+    environment: {POSTGRES_USER: odoo, POSTGRES_PASSWORD: odoo, POSTGRES_DB: postgres}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo"]
+      interval: 3s
+      retries: 20
+
+  init:
+    <<: *odoo
+    depends_on: {db: {condition: service_healthy}}
+    command: odoo -d demo -i account --stop-after-init
+    restart: "no"
+
+  odoo:
+    <<: *odoo
+    depends_on: {init: {condition: service_completed_successfully}}
+    command: odoo -d demo --db-filter=^demo$$
+    ports: ["127.0.0.1:18069:8069"]

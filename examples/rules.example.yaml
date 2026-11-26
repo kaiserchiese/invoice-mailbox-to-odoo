@@ -1,0 +1,11 @@
+since: 2026-01-01
+rules:
+  - name: Acme Hosting
+    folder: Acme Hosting
+    query: 'from:billing@acme.test has:attachment filename:pdf'
+    attachment: '^INV-'
+  - name: Globex Telecom
+    folder: Globex Telecom
+    query: 'from:invoices@globex.test has:attachment filename:pdf'
+  - name: Initech Portal
+    folder: Initech Portal   # invoice comes from a web portal: no query, rule is skipped

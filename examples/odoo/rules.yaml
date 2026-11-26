@@ -1,0 +1,10 @@
+# Suppliers that exist in Odoo's demo data. `partner` is the exact name in Odoo.
+since: 2026-01-01
+rules:
+  - name: Azure Interior
+    folder: Azure Interior
+    query: 'from:billing@azure.test has:attachment filename:pdf'
+    partner: Azure Interior
+  - name: Unknown supplier
+    folder: Unknown supplier
+    query: 'from:hello@unknown.test has:attachment filename:pdf'
